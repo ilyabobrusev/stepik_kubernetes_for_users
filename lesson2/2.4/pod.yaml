@@ -1,0 +1,17 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: simple-web
+  namespace: web-app-dev
+  labels:
+    app: goweb
+spec:
+  containers:
+    - name: web
+      image: ilyabobrusev/lesson1:v0.2
+      imagePullPolicy: Always
+      ports:
+        - name: web
+          containerPort: 8080
+          protocol: TCP
