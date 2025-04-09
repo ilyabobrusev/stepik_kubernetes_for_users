@@ -1,0 +1,45 @@
+---
+# ns.yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: demo-lb
+---
+# deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: goapp-deployment
+  namespace: demo-lb
+  labels:
+    app: goapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: goapp
+  template:
+    metadata:
+      labels:
+        app: goapp
+    spec:
+      containers:
+        - name: web
+          image: ksxack/lesson1:v0.2
+          ports:
+            - containerPort: 8080
+---
+# lb.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: demo-lb
+  name: goweb-svc-lb
+spec:
+  type: LoadBalancer
+  selector:
+    app: goapp
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
